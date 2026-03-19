@@ -1,0 +1,1 @@
+/Users/kirill/AndroidStudioProjects/libs/mbedtls/mbedtls/programs/test/query_config.c

@@ -1,0 +1,95 @@
+Performing C++ SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_6c818/fast && /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_6c818.dir/build.make CMakeFiles/cmTC_6c818.dir/build
+Building CXX object CMakeFiles/cmTC_6c818.dir/src.cxx.o
+/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=aarch64-none-linux-android21 --sysroot=/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DCMAKE_HAVE_LIBC_PTHREAD  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB  -fPIE -std=c++11 -MD -MT CMakeFiles/cmTC_6c818.dir/src.cxx.o -MF CMakeFiles/cmTC_6c818.dir/src.cxx.o.d -o CMakeFiles/cmTC_6c818.dir/src.cxx.o -c /Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CMakeTmp/src.cxx
+/Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CMakeTmp/src.cxx:13:3: error: use of undeclared identifier 'pthread_cancel'
+   13 |   pthread_cancel(thread);
+      |   ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTC_6c818.dir/src.cxx.o] Error 1
+make: *** [cmTC_6c818/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_7c0ab/fast && /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_7c0ab.dir/build.make CMakeFiles/cmTC_7c0ab.dir/build
+Building CXX object CMakeFiles/cmTC_7c0ab.dir/CheckFunctionExists.cxx.o
+/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=aarch64-none-linux-android21 --sysroot=/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/sysroot   -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB -DCHECK_FUNCTION_EXISTS=pthread_create -fPIE -std=c++11 -MD -MT CMakeFiles/cmTC_7c0ab.dir/CheckFunctionExists.cxx.o -MF CMakeFiles/cmTC_7c0ab.dir/CheckFunctionExists.cxx.o.d -o CMakeFiles/cmTC_7c0ab.dir/CheckFunctionExists.cxx.o -c /Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_7c0ab
+/Users/kirill/Library/Android/sdk/cmake/3.22.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7c0ab.dir/link.txt --verbose=1
+/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=aarch64-none-linux-android21 --sysroot=/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB -DCHECK_FUNCTION_EXISTS=pthread_create -static-libstdc++ -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    CMakeFiles/cmTC_7c0ab.dir/CheckFunctionExists.cxx.o -o cmTC_7c0ab  -lpthreads -latomic -lm 
+ld.lld: error: unable to find library -lpthreads
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [cmTC_7c0ab] Error 1
+make: *** [cmTC_7c0ab/fast] Error 2
+
+
+
+Determining if the function pthread_create exists in the pthread failed with the following output:
+Change Dir: /Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_bb77b/fast && /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_bb77b.dir/build.make CMakeFiles/cmTC_bb77b.dir/build
+Building CXX object CMakeFiles/cmTC_bb77b.dir/CheckFunctionExists.cxx.o
+/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=aarch64-none-linux-android21 --sysroot=/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/sysroot   -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB -DCHECK_FUNCTION_EXISTS=pthread_create -fPIE -std=c++11 -MD -MT CMakeFiles/cmTC_bb77b.dir/CheckFunctionExists.cxx.o -MF CMakeFiles/cmTC_bb77b.dir/CheckFunctionExists.cxx.o.d -o CMakeFiles/cmTC_bb77b.dir/CheckFunctionExists.cxx.o -c /Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_bb77b
+/Users/kirill/Library/Android/sdk/cmake/3.22.1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bb77b.dir/link.txt --verbose=1
+/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=aarch64-none-linux-android21 --sysroot=/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB -DCHECK_FUNCTION_EXISTS=pthread_create -static-libstdc++ -Wl,--build-id=sha1 -Wl,--no-rosegment -Wl,--no-undefined-version -Wl,--fatal-warnings -Wl,--no-undefined -Qunused-arguments    CMakeFiles/cmTC_bb77b.dir/CheckFunctionExists.cxx.o -o cmTC_bb77b  -lpthread -latomic -lm 
+ld.lld: error: unable to find library -lpthread
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [cmTC_bb77b] Error 1
+make: *** [cmTC_bb77b/fast] Error 2
+
+
+
+Determining if the fwrite_unlocked exist failed with the following output:
+Change Dir: /Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_74be8/fast && /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_74be8.dir/build.make CMakeFiles/cmTC_74be8.dir/build
+Building CXX object CMakeFiles/cmTC_74be8.dir/CheckSymbolExists.cxx.o
+/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=aarch64-none-linux-android21 --sysroot=/Users/kirill/Library/Android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/darwin-x86_64/sysroot   -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -DSPDLOG_COMPILED_LIB  -fPIE -std=c++11 -MD -MT CMakeFiles/cmTC_74be8.dir/CheckSymbolExists.cxx.o -MF CMakeFiles/cmTC_74be8.dir/CheckSymbolExists.cxx.o.d -o CMakeFiles/cmTC_74be8.dir/CheckSymbolExists.cxx.o -c /Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+/Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: use of undeclared identifier 'fwrite_unlocked'
+    8 |   return ((int*)(&fwrite_unlocked))[argc];
+      |                   ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTC_74be8.dir/CheckSymbolExists.cxx.o] Error 1
+make: *** [cmTC_74be8/fast] Error 2
+
+
+File /Users/kirill/AndroidStudioProjects/libs/build/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <stdio.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fwrite_unlocked
+  return ((int*)(&fwrite_unlocked))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
