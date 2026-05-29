@@ -1,9 +1,0 @@
-.git
-bin
-dist
-transport.db
-*.db
-*.sqlite
-*.sqlite3
-frontend/node_modules
-frontend/dist
