@@ -1,0 +1,11 @@
+{
+    "go.toolsEnvVars": {
+        "GO111MODULE": "on",
+        "GOFLAGS": "-mod=mod"
+    },
+    "gopls": {
+        "buildFlags": [
+            "-mod=mod"
+        ]
+    }
+}
