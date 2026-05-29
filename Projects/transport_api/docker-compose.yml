@@ -1,0 +1,19 @@
+services:
+  transport-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: transport_api
+    ports:
+      - "8888:8888"
+    environment:
+      APP_ADDR: ":8080"
+      DB_PATH: "/app/data/transport.db"
+      JWT_SECRET: "dev-secret-change-me"
+      ADMIN_USERNAME: "admin"
+      ADMIN_PASSWORD: "admin123"
+    volumes:
+      - transport_api_data:/app/data
+
+volumes:
+  transport_api_data:

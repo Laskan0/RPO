@@ -1,0 +1,550 @@
+openapi: 3.0.3
+
+info:
+  title: Transport Payment API
+  version: 1.0.0
+  description: REST API server for transport card payment authorization with PN532 terminal support.
+
+servers:
+  - url: https://localhost:8888/api/v1
+    description: Docker HTTPS server
+  - url: http://localhost:8080/api/v1
+    description: Local Go server
+
+tags:
+  - name: Health
+  - name: Auth
+  - name: Users
+  - name: Terminals
+  - name: Cards
+  - name: Keys
+  - name: Transactions
+  - name: Terminal API
+
+security:
+  - bearerAuth: []
+
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      security: []
+      responses:
+        "200":
+          description: API is running
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login and receive JWT token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+            example:
+              username: admin
+              password: admin123
+      responses:
+        "200":
+          description: JWT token returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Invalid username or password
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: Get current JWT user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserSummary"
+
+  /users:
+    get:
+      tags: [Users]
+      summary: List users
+      responses:
+        "200":
+          description: Users list
+    post:
+      tags: [Users]
+      summary: Create user
+      description: Admin only
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreateRequest"
+            example:
+              username: operator
+              password: operator123
+              role: user
+      responses:
+        "201":
+          description: User created
+
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: Get user by id
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "200":
+          description: User
+    put:
+      tags: [Users]
+      summary: Update user
+      description: Admin only
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "200":
+          description: User updated
+    delete:
+      tags: [Users]
+      summary: Delete user
+      description: Admin only
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "204":
+          description: User deleted
+
+  /terminals:
+    get:
+      tags: [Terminals]
+      summary: List terminals
+      responses:
+        "200":
+          description: Terminals list
+    post:
+      tags: [Terminals]
+      summary: Create terminal
+      description: Admin only
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TerminalRequest"
+            example:
+              serial: TERM-001
+              name: PN532 terminal
+              location: MacBook lab
+              is_active: true
+      responses:
+        "201":
+          description: Terminal created
+
+  /terminals/{id}:
+    get:
+      tags: [Terminals]
+      summary: Get terminal by id
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "200":
+          description: Terminal
+    put:
+      tags: [Terminals]
+      summary: Update terminal
+      description: Admin only
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "200":
+          description: Terminal updated
+    delete:
+      tags: [Terminals]
+      summary: Delete terminal
+      description: Admin only
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "204":
+          description: Terminal deleted
+
+  /cards:
+    get:
+      tags: [Cards]
+      summary: List cards
+      responses:
+        "200":
+          description: Cards list
+    post:
+      tags: [Cards]
+      summary: Create card
+      description: Admin only
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardRequest"
+            example:
+              card_number: b754105e
+              owner_name: Test Passenger
+              balance: 500
+              is_blocked: false
+              key_id: 1
+      responses:
+        "201":
+          description: Card created
+
+  /cards/{id}:
+    get:
+      tags: [Cards]
+      summary: Get card by id
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "200":
+          description: Card
+    put:
+      tags: [Cards]
+      summary: Update card
+      description: Admin only
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardRequest"
+            example:
+              card_number: b754105e
+              owner_name: Test Passenger
+              balance: 500
+              is_blocked: false
+              key_id: 1
+      responses:
+        "200":
+          description: Card updated
+    delete:
+      tags: [Cards]
+      summary: Delete card
+      description: Admin only
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "204":
+          description: Card deleted
+
+  /keys:
+    get:
+      tags: [Keys]
+      summary: List keys
+      responses:
+        "200":
+          description: Keys list
+    post:
+      tags: [Keys]
+      summary: Create key
+      description: Admin only
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KeyRequest"
+            example:
+              name: Default MIFARE Key A
+              key_type: mifare
+              key_value: FFFFFFFFFFFF
+              key_version: 1
+              terminal_id: null
+              is_active: true
+      responses:
+        "201":
+          description: Key created
+
+  /keys/{id}:
+    get:
+      tags: [Keys]
+      summary: Get key by id
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "200":
+          description: Key
+    put:
+      tags: [Keys]
+      summary: Update key
+      description: Admin only
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KeyRequest"
+            example:
+              name: Default MIFARE Key A
+              key_type: mifare
+              key_value: FFFFFFFFFFFF
+              key_version: 1
+              terminal_id: null
+              is_active: true
+      responses:
+        "200":
+          description: Key updated
+    delete:
+      tags: [Keys]
+      summary: Delete key
+      description: Admin only
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "204":
+          description: Key deleted
+
+  /transactions:
+    get:
+      tags: [Transactions]
+      summary: List transactions
+      responses:
+        "200":
+          description: Transactions list
+
+  /transactions/{id}:
+    get:
+      tags: [Transactions]
+      summary: Get transaction by id
+      parameters:
+        - $ref: "#/components/parameters/ID"
+      responses:
+        "200":
+          description: Transaction
+
+  /terminal/transactions/authorize:
+    post:
+      tags: [Terminal API]
+      summary: Authorize transport card payment
+      description: Used by Dart CLI or Flutter macOS app after PN532 reads card UID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthorizePaymentRequest"
+            example:
+              terminal_serial: TERM-001
+              card_number: b754105e
+              amount: 65
+      responses:
+        "200":
+          description: Payment authorization result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizePaymentResponse"
+
+  /terminal/keys:
+    get:
+      tags: [Terminal API]
+      summary: Load active keys for terminal
+      parameters:
+        - name: terminal_serial
+          in: query
+          required: true
+          schema:
+            type: string
+          example: TERM-001
+      responses:
+        "200":
+          description: Active keys for terminal
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    ID:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+      example: 1
+
+  schemas:
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          example: admin123
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/UserSummary"
+
+    UserSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        username:
+          type: string
+          example: admin
+        role:
+          type: string
+          enum: [admin, user]
+          example: admin
+
+    UserCreateRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          example: operator
+        password:
+          type: string
+          example: operator123
+        role:
+          type: string
+          enum: [admin, user]
+          example: user
+
+    TerminalRequest:
+      type: object
+      required: [serial, name]
+      properties:
+        serial:
+          type: string
+          example: TERM-001
+        name:
+          type: string
+          example: PN532 terminal
+        location:
+          type: string
+          example: MacBook lab
+        is_active:
+          type: boolean
+          example: true
+
+    CardRequest:
+      type: object
+      required: [card_number]
+      properties:
+        card_number:
+          type: string
+          description: Compact UID from PN532.
+          example: b754105e
+        owner_name:
+          type: string
+          example: Test Passenger
+        balance:
+          type: integer
+          format: int64
+          example: 500
+        is_blocked:
+          type: boolean
+          example: false
+        key_id:
+          type: integer
+          format: int64
+          nullable: true
+          description: ID of MIFARE key linked to this card. One key can be used by multiple cards.
+          example: 1
+
+    KeyRequest:
+      type: object
+      required: [name, key_value]
+      properties:
+        name:
+          type: string
+          example: Default MIFARE Key A
+        key_type:
+          type: string
+          enum: [mifare, terminal, system]
+          example: mifare
+        key_value:
+          type: string
+          example: FFFFFFFFFFFF
+        key_version:
+          type: integer
+          example: 1
+        terminal_id:
+          type: integer
+          format: int64
+          nullable: true
+          example: null
+        is_active:
+          type: boolean
+          example: true
+
+    AuthorizePaymentRequest:
+      type: object
+      required: [terminal_serial, card_number, amount]
+      properties:
+        terminal_serial:
+          type: string
+          example: TERM-001
+        card_number:
+          type: string
+          description: Compact UID from PN532, for example b754105e.
+          example: b754105e
+        amount:
+          type: integer
+          format: int64
+          example: 65
+
+    AuthorizePaymentResponse:
+      type: object
+      properties:
+        approved:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Transaction approved
+        card_number:
+          type: string
+          example: b754105e
+        balance_before:
+          type: integer
+          format: int64
+          example: 500
+        amount:
+          type: integer
+          format: int64
+          example: 65
+        balance_after:
+          type: integer
+          format: int64
+          example: 435
+        transaction_id:
+          type: integer
+          format: int64
+          example: 1
